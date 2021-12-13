@@ -14,6 +14,9 @@ CollectionName = "Collection Name".lower()
 
 collection = requests.get(f"http://api.opensea.io/api/v1/collection/{CollectionName}?format=json")
 
+if collection.status_code == 429:
+    print("Server returned HTTP 429. Request was throttled. Please try again in about 5 minutes.")
+
 if collection.status_code == 404:
     print("NFT Collection not found.\n\n(Hint: Try changing the name of the collection in the Python script, line 11.)")
     exit()
@@ -56,46 +59,47 @@ for i in range(iter):
     offset = i * 50
     data = json.loads(requests.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json").content.decode())
 
-    for asset in data["assets"]:
-      formatted_number = f"{int(asset['token_id']):04d}"
+    if "assets" in data:
+        for asset in data["assets"]:
+          formatted_number = f"{int(asset['token_id']):04d}"
 
-      print(f"\n#{formatted_number}:")
+          print(f"\n#{formatted_number}:")
 
-      # Check if data for the NFT already exists, if it does, skip saving it
-      if os.path.exists(f'./images/{CollectionName}/image_data/{formatted_number}.json'):
-          print(f"  Data  -> [\u2713] (Already Downloaded)")
-          stats["AlreadyDownloadedData"] += 1
-      else:
-            # Take the JSON from the URL, and dump it to the respective file.
-            dfile = open(f"./images/{CollectionName}/image_data/{formatted_number}.json", "w+")
-            json.dump(asset, dfile, indent=3)
-            dfile.close()
-            print(f"  Data  -> [\u2713] (Successfully downloaded)")
-            stats["DownloadedData"] += 1
+          # Check if data for the NFT already exists, if it does, skip saving it
+          if os.path.exists(f'./images/{CollectionName}/image_data/{formatted_number}.json'):
+              print(f"  Data  -> [\u2713] (Already Downloaded)")
+              stats["AlreadyDownloadedData"] += 1
+          else:
+                # Take the JSON from the URL, and dump it to the respective file.
+                dfile = open(f"./images/{CollectionName}/image_data/{formatted_number}.json", "w+")
+                json.dump(asset, dfile, indent=3)
+                dfile.close()
+                print(f"  Data  -> [\u2713] (Successfully downloaded)")
+                stats["DownloadedData"] += 1
 
-      # Check if image already exists, if it does, skip saving it
-      if os.path.exists(f'./images/{CollectionName}/{formatted_number}.png'):
-          print(f"  Image -> [\u2713] (Already Downloaded)")
-          stats["AlreadyDownloadedImages"] += 1
-      else:
-        # Make the request to the URL to get the image
-        if not asset["image_original_url"] == None:
-          image = requests.get(asset["image_original_url"])
-        else:
-          image = requests.get(asset["image_url"])
+          # Check if image already exists, if it does, skip saving it
+          if os.path.exists(f'./images/{CollectionName}/{formatted_number}.png'):
+              print(f"  Image -> [\u2713] (Already Downloaded)")
+              stats["AlreadyDownloadedImages"] += 1
+          else:
+            # Make the request to the URL to get the image
+            if not asset["image_original_url"] == None:
+              image = requests.get(asset["image_original_url"])
+            else:
+              image = requests.get(asset["image_url"])
 
-      # If the URL returns status code "200 Successful", save the image into the "images" folder.
-        if image.status_code == 200:
-            file = open(f"./images/{CollectionName}/{formatted_number}.png", "wb+")
-            file.write(image.content)
-            file.close()
-            print(f"  Image -> [\u2713] (Successfully downloaded)")
-            stats["DownloadedImages"] += 1
-        # If the URL returns a status code other than "200 Successful", alert the user and don't save the image
-        else:
-            print(f"  Image -> [!] (HTTP Status {image.status_code})")
-            stats["FailedImages"] += 1
-            continue
+          # If the URL returns status code "200 Successful", save the image into the "images" folder.
+            if image.status_code == 200:
+                file = open(f"./images/{CollectionName}/{formatted_number}.png", "wb+")
+                file.write(image.content)
+                file.close()
+                print(f"  Image -> [\u2713] (Successfully downloaded)")
+                stats["DownloadedImages"] += 1
+            # If the URL returns a status code other than "200 Successful", alert the user and don't save the image
+            else:
+                print(f"  Image -> [!] (HTTP Status {image.status_code})")
+                stats["FailedImages"] += 1
+                continue
 
 print(f"""
 
