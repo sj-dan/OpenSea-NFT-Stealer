@@ -4,7 +4,7 @@ import json
 import math
 
 # This is where you add the collection name to the URL
-CollectionName = "akc".lower()
+CollectionName = "Collection Name".lower()
 
 # Headers for the API request to get the list of all the collections. Check your header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
 headers = {
