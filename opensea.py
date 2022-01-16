@@ -2,13 +2,22 @@ import requests
 import os
 import json
 import math
+from random_user_agent.user_agent import UserAgent
+from random_user_agent.params import SoftwareName, OperatingSystem
 
 # This is where you add the collection name to the URL
-CollectionName = "Collection Name".lower()
+CollectionName = "paladin-pandas".lower()
 
-# Headers for the API request to get the list of all the collections. Check your header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
+# Random User Agent
+software_names = [SoftwareName.CHROME.value]
+operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]
+user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
+user_agent = user_agent_rotator.get_random_user_agent()
+
+# Headers for the request. Currently this is generating random user agents
+# Use a custome header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
 headers = {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'
+      'User-Agent': user_agent
   }
 
 # Get information regarding collection
