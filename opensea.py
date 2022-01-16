@@ -1,14 +1,15 @@
-
-# 11/28/2021
-# Made by DanChan
-# NFT Stealer (OpenSea)
-
 import requests
 import os
 import json
 import math
 
-CollectionName = "Collection Name".lower()
+# This is where you add the collection name to the URL
+CollectionName = "akc".lower()
+
+# Headers for the API request to get the list of all the collections. Check your header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
+headers = {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'
+  }
 
 # Get information regarding collection
 
@@ -18,7 +19,7 @@ if collection.status_code == 429:
     print("Server returned HTTP 429. Request was throttled. Please try again in about 5 minutes.")
 
 if collection.status_code == 404:
-    print("NFT Collection not found.\n\n(Hint: Try changing the name of the collection in the Python script, line 11.)")
+    print("NFT Collection not found.\n\n(Hint: Try changing the name of the collection in the Python script, line 6.)")
     exit()
 
 collectioninfo = json.loads(collection.content.decode())
@@ -57,7 +58,7 @@ stats = {
 # Iterate through every unit
 for i in range(iter):
     offset = i * 50
-    data = json.loads(requests.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json").content.decode())
+    data = json.loads(requests.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json", headers=headers).content.decode())
 
     if "assets" in data:
         for asset in data["assets"]:
