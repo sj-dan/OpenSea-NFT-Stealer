@@ -6,7 +6,7 @@ from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 
 # This is where you add the collection name to the URL
-CollectionName = "paladin-pandas".lower()
+CollectionName = "Collection Name".lower()
 
 # Random User Agent
 software_names = [SoftwareName.CHROME.value]
