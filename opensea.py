@@ -8,11 +8,11 @@ import os
 import json
 import math
 
-CollectionName = "Collection Name".lower()
-
+CollectionName = "paladin-pandas".lower()
+headers = headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 # Get information regarding collection
 
-collection = requests.get(f"http://api.opensea.io/api/v1/collection/{CollectionName}?format=json")
+collection = requests.get(f"http://api.opensea.io/api/v1/collection/{CollectionName}?format=json", headers=headers)
 
 if collection.status_code == 429:
     print("Server returned HTTP 429. Request was throttled. Please try again in about 5 minutes.")
@@ -57,7 +57,9 @@ stats = {
 # Iterate through every unit
 for i in range(iter):
     offset = i * 50
-    data = json.loads(requests.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json").content.decode())
+    print(f'https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json')
+    exit()
+    data = json.loads(requests.get(f'https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json', headers=headers).content.decode())
 
     if "assets" in data:
         for asset in data["assets"]:
@@ -84,9 +86,9 @@ for i in range(iter):
           else:
             # Make the request to the URL to get the image
             if not asset["image_original_url"] == None:
-              image = requests.get(asset["image_original_url"])
+              image = requests.get(asset["image_url"], headers=headers)
             else:
-              image = requests.get(asset["image_url"])
+              image = requests.get(asset["image_url"], headers=headers)
 
           # If the URL returns status code "200 Successful", save the image into the "images" folder.
             if image.status_code == 200:
