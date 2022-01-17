@@ -57,8 +57,6 @@ stats = {
 # Iterate through every unit
 for i in range(iter):
     offset = i * 50
-    print(f'https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json')
-    exit()
     data = json.loads(requests.get(f'https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json', headers=headers).content.decode())
 
     if "assets" in data:
