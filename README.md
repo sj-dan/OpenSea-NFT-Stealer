@@ -9,7 +9,7 @@ Prerequisites:
 
 To download the script, either use `git clone` or click "Code" > "Download ZIP" on the GitHub page.
 
-Lastly, open the script in a text editor, and change the `CollectionName` variable on Line 11 to your collection of choice, by finding the collection's name on OpenSea. For example, the [Lazy Lions](https://opensea.io/collection/lazy-lions) collection has the name "lazy-lions" (opensea.io/collection/**lazy-lions**).
+Lastly, open the script in a text editor, and change the `CollectionName` variable on Line 11 to your collection of choice, by finding the collection's name on OpenSea. For example, the [Lazy Lions](https://opensea.io/collection/lazy-lions) collection has the name "lazy-lions" (opensea.io/collection/**lazy-lions**). CollectionName can also be found in the URL on opensea.io
 
 Now, just run the script.
 
