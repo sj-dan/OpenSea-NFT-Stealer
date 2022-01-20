@@ -15,9 +15,10 @@ user_agent_rotator = UserAgent(software_names=software_names, operating_systems=
 user_agent = user_agent_rotator.get_random_user_agent()
 
 # Headers for the request. Currently this is generating random user agents
-# Use a custome header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
+# Use a custom header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
 headers = {
-      'User-Agent': user_agent
+      'User-Agent': user_agent,
+      "Accept": "application/json"
   }
 
 # Get information regarding collection
