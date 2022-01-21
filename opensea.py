@@ -69,22 +69,22 @@ stats = {
 # Define IPFS Gateways
 
 ipfs_gateways = [
-'cf-ipfs.com', 
-'gateway.ipfs.io', 
-'cloudflare-ipfs.com', 
-'10.via0.com', 
-'gateway.pinata.cloud', 
-'ipfs.cf-ipfs.com', 
-'ipfs.io', 
-'ipfs.sloppyta.co', 
-'ipfs.best-practice.se', 
-'snap1.d.tube', 
-'ipfs.greyh.at', 
-'ipfs.drink.cafe', 
-'ipfs.2read.net', 
-'robotizing.net', 
-'dweb.link', 
-'ninetailed.ninja'
+  'cf-ipfs.com',
+  'gateway.ipfs.io',
+  'cloudflare-ipfs.com',
+  '10.via0.com',
+  'gateway.pinata.cloud',
+  'ipfs.cf-ipfs.com',
+  'ipfs.io',
+  'ipfs.sloppyta.co',
+  'ipfs.best-practice.se',
+  'snap1.d.tube',
+  'ipfs.greyh.at',
+  'ipfs.drink.cafe',
+  'ipfs.2read.net',
+  'robotizing.net',
+  'dweb.link',
+  'ninetailed.ninja'
 ]
 
 # Create IPFS download function
@@ -133,7 +133,8 @@ for i in range(iter):
             # If the URL returned is IPFS, then change it to use a public gateway
             if image_url.startswith("ipfs://"):
               image_url = ipfs_resolve(image_url).url
-              image = requests.get(image_url)
+                
+            image = requests.get(image_url)
 
             # If the URL returns status code "200 Successful", save the image into the "images" folder.
             if image.status_code == 200:
