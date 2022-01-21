@@ -1,3 +1,4 @@
+from email.mime import image
 import requests
 import os
 import json
@@ -58,12 +59,42 @@ print(f"\nBeginning download of \"{CollectionName}\" collection.\n")
 # Define variables for statistics
 
 stats = {
-"DownloadedData": 0,
-"AlreadyDownloadedData": 0,
-"DownloadedImages": 0,
-"AlreadyDownloadedImages": 0,
-"FailedImages": 0
+  "DownloadedData": 0,
+  "AlreadyDownloadedData": 0,
+  "DownloadedImages": 0,
+  "AlreadyDownloadedImages": 0,
+  "FailedImages": 0
 }
+
+# Define IPFS Gateways
+
+ipfs_gateways = [
+'cf-ipfs.com', 
+'gateway.ipfs.io', 
+'cloudflare-ipfs.com', 
+'10.via0.com', 
+'gateway.pinata.cloud', 
+'ipfs.cf-ipfs.com', 
+'ipfs.io', 
+'ipfs.sloppyta.co', 
+'ipfs.best-practice.se', 
+'snap1.d.tube', 
+'ipfs.greyh.at', 
+'ipfs.drink.cafe', 
+'ipfs.2read.net', 
+'robotizing.net', 
+'dweb.link', 
+'ninetailed.ninja'
+]
+
+# Create IPFS download function
+def ipfs_resolve(image_url):
+  cid = image_url.removeprefix("ipfs://")
+  for gateway in ipfs_gateways:
+    request = requests.get(f"https://{gateway}/ipfs/{cid}")
+    if request.status_code == 200:
+      break
+  return request
 
 # Iterate through every unit
 for i in range(iter):
@@ -95,11 +126,16 @@ for i in range(iter):
           else:
             # Make the request to the URL to get the image
             if not asset["image_original_url"] == None:
-              image = requests.get(asset["image_original_url"])
+              image_url = asset["image_original_url"]
             else:
-              image = requests.get(asset["image_url"])
+              image_url = asset["image_url"]
+            
+            # If the URL returned is IPFS, then change it to use a public gateway
+            if image_url.startswith("ipfs://"):
+              image_url = ipfs_resolve(image_url).url
+              image = requests.get(image_url)
 
-          # If the URL returns status code "200 Successful", save the image into the "images" folder.
+            # If the URL returns status code "200 Successful", save the image into the "images" folder.
             if image.status_code == 200:
                 file = open(f"./images/{CollectionName}/{formatted_number}.png", "wb+")
                 file.write(image.content)
