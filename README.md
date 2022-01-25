@@ -5,7 +5,7 @@ The sole purpose of this script is to download any NFT collection from [OpenSea]
 Prerequisites:
 - Python 3
 - Python `requests` library (Install using `pip install requests`)
-- Python `random_user_agents` library (Install using `pip install random_user_agents`)
+- Python `random_user_agents` library (Install using `pip install random_user_agent`)
 - A brain
 
 To download the script, either use `git clone` or click "Code" > "Download ZIP" on the GitHub page.
