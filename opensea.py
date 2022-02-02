@@ -27,6 +27,7 @@ collection = requests.get(f"http://api.opensea.io/api/v1/collection/{CollectionN
 
 if collection.status_code == 429:
     print("Server returned HTTP 429. Request was throttled. Please try again in about 5 minutes.")
+    exit()
 
 if collection.status_code == 404:
     print("NFT Collection not found.\n\n(Hint: Try changing the name of the collection in the Python script, line 6.)")
@@ -49,9 +50,9 @@ if not os.path.exists(f'./images/{CollectionName}/image_data'):
 
 count = int(collectioninfo["collection"]["stats"]["count"])
 
-# Opensea limits to 50 assets per API request, so here we do the division and round up.
+# Opensea limits to 30 assets per API request, so here we do the division and round up.
 
-iter = math.ceil(count / 50)
+iter = math.ceil(count / 30)
 
 print(f"\nBeginning download of \"{CollectionName}\" collection.\n")
 
@@ -97,12 +98,17 @@ def ipfs_resolve(image_url):
 
 # Iterate through every unit
 for i in range(iter):
-    offset = i * 50
-    data = json.loads(requests.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc&offset={offset}&limit=50&collection={CollectionName}&format=json", headers=headers).content.decode())
+    offset = i * 30
+    token_ids = ""
+    for i in range(offset, offset+30):
+      token_ids += f"&token_ids={i}"
+
+    data = json.loads(requests.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc{token_ids}&limit=50&collection={CollectionName}&format=json", headers=headers).content.decode())
 
     if "assets" in data:
         for asset in data["assets"]:
-          formatted_number = f"{int(asset['token_id']):04d}"
+          id = str(asset['token_id'])
+          formatted_number = "0" * (len(str(count)) - len(id)) + id
 
           print(f"\n#{formatted_number}:")
 
