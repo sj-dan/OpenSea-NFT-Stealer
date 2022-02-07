@@ -4,6 +4,16 @@ import json
 import math
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
+import cloudscraper
+
+# This creates a new Scraper instance that can get past the OpenSea Cloudflare protections
+scraper = cloudscraper.create_scraper(
+    browser={
+        'browser': 'firefox',
+        'platform': 'windows',
+        'mobile': False
+    }
+)
 
 # This is where you add the collection name to the URL
 CollectionName = "Collection Name".lower()
@@ -102,8 +112,8 @@ for i in range(iter):
     token_ids = ""
     for i in range(offset, offset+30):
       token_ids += f"&token_ids={i}"
-
-    data = json.loads(requests.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc{token_ids}&limit=50&collection={CollectionName}&format=json", headers=headers).content.decode())
+      
+    data = json.loads(scraper.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc{token_ids}&limit=50&collection={CollectionName}&format=json", headers=headers).text)
 
     if "assets" in data:
         for asset in data["assets"]:
