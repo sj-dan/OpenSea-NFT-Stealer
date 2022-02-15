@@ -5,6 +5,7 @@ import math
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 import cloudscraper
+import argparse
 
 # This creates a new Scraper instance that can get past the OpenSea Cloudflare protections
 scraper = cloudscraper.create_scraper(
@@ -15,8 +16,14 @@ scraper = cloudscraper.create_scraper(
     }
 )
 
+# get collection name from arguments
+parser = argparse.ArgumentParser(description='Mass download the metadata & images for a collection of NFTs')
+parser.add_argument('collection_name', action='store', type=str, help='collection name to parse')
+args = parser.parse_args()
+
 # This is where you add the collection name to the URL
-CollectionName = "karafuru".lower()
+CollectionName = args.collection_name.lower()
+
 
 # Random User Agent
 software_names = [SoftwareName.CHROME.value]
