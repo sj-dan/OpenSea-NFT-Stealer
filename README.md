@@ -21,17 +21,17 @@ To install the dependencies for the script, simply run `pip install -r requireme
 
 #### Step 3: Choose your collection
 
-Lastly, open the script in a text editor, and change the `CollectionName` variable on Line 11 to your collection of choice, by finding the collection's name on OpenSea. For example, the [Lazy Lions](https://opensea.io/collection/lazy-lions) collection has the name "lazy-lions" (opensea.io/collection/**lazy-lions**). CollectionName can also be found in the URL on opensea.io
+Find the collection name you want to scrape on OpenSea by looking at end of the collection URL. For example, the [Lazy Lions](https://opensea.io/collection/lazy-lions) collection has the name "lazy-lions" (opensea.io/collection/**lazy-lions**).
 
 #### Step 4: Run the script
 
-Now, just run the script.
+Now, just run the script with the collection name at the end as so:
 
-On Linux, just type `python3 opensea.py` in the terminal.
+On Linux, just type `python3 opensea.py lazy-lions` in the terminal.
 
-On Windows, just double-click on the file.
+On Windows, just type `py opensea.py lazy-lions` in the command line.
 
-On MacOS, there are many different ways to do it. ([Google it](https://google.com/?q=how+to+open+python+script+on+macos))
+On MacOS, you may run it the same as Linux. There are many different ways to do it, ([Google it](https://google.com/?q=how+to+open+python+script+on+macos))
 
 ---
 
