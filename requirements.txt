@@ -1,3 +1,4 @@
 requests
 random_user_agent
 cloudscraper
+argparse
