@@ -146,15 +146,26 @@ for i in range(iter):
             if os.path.exists(f'./images/{CollectionName}/{formatted_number}.png'):
                 print(f"  Image -> [\u2713] (Already Downloaded)")
                 stats["AlreadyDownloadedImages"] += 1
+                continue
             else:
                 # Make the request to the URL to get the image
                 if not asset["image_url"] is None:
                     image_url = asset["image_url"]
-                    image = requests.get(image_url)
+                    if not len(image_url) == 0:
+                        image = requests.get(image_url)
+                    else:
+                        print(f"  Image -> [!] (Blank URL)")
+                        stats["FailedImages"] += 1
+                        continue
 
             # If the URL returned is IPFS, then change it to use a public gateway
             if image_url.startswith("ipfs://"):
                 image_url = ipfs_resolve(image_url).url
+
+            if len(image_url) == 0:
+                print(f"  Image -> [!] (Blank URL)")
+                stats["FailedImages"] += 1
+                continue
 
             image = requests.get(image_url)
 
