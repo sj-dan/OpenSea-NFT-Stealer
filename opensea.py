@@ -149,8 +149,8 @@ for i in range(iter):
                 continue
             else:
                 # Make the request to the URL to get the image
-                if not asset["image_url"] is None:
-                    image_url = asset["image_url"]
+                if not asset["image_original_url"] is None:
+                    image_url = asset["image_original_url"]
                     if not len(image_url) == 0:
                         image = requests.get(image_url)
                     else:
