@@ -34,7 +34,8 @@ user_agent = user_agent_rotator.get_random_user_agent()
 # Headers for the request. Currently this is generating random user agents
 # Use a custom header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
 headers = {
-    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"}
+    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
+}
 
 # Get information regarding collection
 
@@ -149,14 +150,19 @@ for i in range(iter):
                 continue
             else:
                 # Make the request to the URL to get the image
-                if not asset["image_url"] is None:
+                if not asset["image_original_url"] is None:
+                    image_url = asset["image_original_url"]
+                elif not asset["image_url"] is None:
                     image_url = asset["image_url"]
-                    if not len(image_url) == 0:
-                        image = requests.get(image_url)
-                    else:
-                        print(f"  Image -> [!] (Blank URL)")
-                        stats["FailedImages"] += 1
-                        continue
+                else:
+                    image_url = ""
+
+                if not len(image_url) == 0:
+                    image = requests.get(image_url)
+                else:
+                    print(f"  Image -> [!] (Blank URL)")
+                    stats["FailedImages"] += 1
+                    continue
 
             # If the URL returned is IPFS, then change it to use a public gateway
             if image_url.startswith("ipfs://"):
