@@ -121,13 +121,15 @@ for i in range(iter):
     for i in range(offset, offset + 30):
         token_ids += f"&token_ids={i}"
 
-    data = json.loads(scraper.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc{token_ids}&limit=50"
+    data = json.loads(scraper.get(f"https://api.opensea.io/api/v1/assets?order_direction=asc{token_ids}&limit=30"
                                   f"&collection={CollectionName}&format=json", headers=headers).text)
 
     if "assets" in data:
         for asset in data["assets"]:
             id = str(asset['token_id'])
+
             formatted_number = "0" * (len(str(count)) - len(id)) + id
+
 
             print(f"\n#{formatted_number}:")
 
