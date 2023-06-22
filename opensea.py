@@ -35,11 +35,12 @@ user_agent = user_agent_rotator.get_random_user_agent()
 # Use a custom header version here -> https://www.whatismybrowser.com/guides/the-latest-user-agent/
 headers = {
     'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
+    'X-API-KEY': os.environ['OPENSEA_API_KEY']
 }
 
 # Get information regarding collection
 
-collection = requests.get(f"http://api.opensea.io/api/v1/collection/{CollectionName}?format=json")
+collection = requests.get(f"http://api.opensea.io/api/v1/collection/{CollectionName}?format=json",headers=headers)
 
 if collection.status_code == 429:
     print("Server returned HTTP 429. Request was throttled. Please try again in about 5 minutes.")
